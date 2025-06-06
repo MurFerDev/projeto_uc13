@@ -1,0 +1,26 @@
+<h1>Dados dos clientes</h1>
+
+{{#if clientes.length}}
+    {{#each clientes}}
+        <div>
+            <table class="table table-bordered">
+            <thead>
+                <tr>
+                <th scope="col">Nome</th>
+                <th scope="col">Email</th>
+                <th scope="col">Endereço</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                <td>{{this.nome}}</td>
+                <td>{{this.email}}</td>
+                <td>{{this.endereco}}</td>
+                </tr>
+            </tbody>
+            </table>
+        </div>
+    {{/each}}
+{{else}}
+    <p>Sem dados de clientes disponíveis no momento.</p>
+{{/if}}
