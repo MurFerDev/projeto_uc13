@@ -3,7 +3,7 @@
 {{#if clientes.length}}
     {{#each clientes}}
         <div>
-            <table class="table table-bordered">
+            <table class="table table-hover">
             <thead>
                 <tr>
                 <th scope="col">Nome</th>
@@ -13,6 +13,8 @@
             </thead>
             <tbody>
                 <tr>
+                <tr class="table-active">
+                <th scope="row">Active</th>
                 <td>{{this.nome}}</td>
                 <td>{{this.email}}</td>
                 <td>{{this.endereco}}</td>
@@ -24,3 +26,5 @@
 {{else}}
     <p>Sem dados de clientes disponíveis no momento.</p>
 {{/if}}
+
+<button type="button" class="btn btn-primary"><a href="/">Início</a></button>

@@ -1,0 +1,21 @@
+<h1>Adicionar Produto</h1>
+
+ <div>
+    <label for="exampleTextarea" class="form-label mt-4">Nome</label>
+    <textarea class="form-control" id="exampleTextarea" rows="1"></textarea>
+</div>
+
+ <div>
+    <label for="exampleTextarea" class="form-label mt-4">Descrição</label>
+    <textarea class="form-control" id="exampleTextarea" rows="3"></textarea>
+</div>
+
+ <div>
+    <label for="exampleSelect1" class="form-label mt-4">Categoria</label>
+    <select class="form-select" id="exampleSelect1" aria-label="Selecione uma categoria">
+        {{#each categorias}}
+        <option value="{{this.id}}">{{this.nome}}</option>
+        {{/each}}
+    </select>
+</div>
+
