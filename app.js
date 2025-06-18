@@ -7,6 +7,7 @@ app.use(express.urlencoded({extended: true}));
 const mysql = require('mysql2');
 
 app.use('/bootstrap', express.static(__dirname + '/node_modules/bootstrap/dist'));
+app.use('/bootstrap-icons', express.static(__dirname + '/node_modules/bootstrap-icons/font'));
 app.use('/static', express.static(__dirname + '/static'));
 
 
@@ -86,16 +87,8 @@ app.post('/produtos/add', (req, res) => {
 });
 
 app.get('/categoria/add', (req, res) => {
-    let sql = 'SELECT id, nome FROM categorias';
-  conexao.query(sql, function (erro, categorias_qs) {
-    if (erro) {
-      console.error('Erro ao consultar categorias:', erro);
-      res.status(500).send('Erro ao consultar categorias');
-      return;
-    }
-    res.render('categoria_form', { categorias: categorias_qs });
-  });
-});
+  res.render('categoria_form');
+}); 
 
 app.post('/categoria/add', (req, res) => {
     const {nome, descricao} = req.body;
@@ -125,6 +118,50 @@ app.get('/categorias', (req, res) => {
             return;
         }
         res.render('categorias', {categorias: categorias_qs});
+    });
+});
+
+app.get('/produtos/:id', (req, res) => {
+    const id = req.params.id;
+    let sql = 'SELECT * FROM produtos WHERE id = ?';
+    conexao.query(sql, [id], function(erro, produto_qs) {
+        if (erro) {
+            console.error('Erro ao consultar produto:', erro);
+            res.status(500).send('Erro ao consultar produto');
+            return;
+        }
+        if (produto_qs.length === 0) {
+            return res.status(404).send('Produto não encontrado');
+        }
+        res.render('produto', {produto: produto_qs[0]});
+    });
+});
+
+app.get('/produtos/categoria/categoria:id', (req, res) => {
+    const categoria_id = req.params.id;
+
+    let sql = `
+        SELECT produtos.*, categorias.nome AS categoria_nome FROM produtos
+        JOIN categorias ON produtos.categoria_id = categorias.id
+        WHERE categorias.id = ?
+        `;
+
+        conexao.query(sql, [categoria_id], function(erro, produtos_qs) {
+            if (erro) {
+                console.error('Erro ao consultar produtos por categoria:', erro);
+                res.status(500).send('Erro ao consultar produtos por categoria');
+                return;
+            }
+        });
+
+        conexao.query(sql, [categoria_id], (erro, produtos_qs) => {
+            if (erro) {
+                console.error('Erro ao consultar produtos por categoria:', erro);
+                res.status(500).send('Erro ao consultar produtos por categoria');
+                return;
+            }
+            res.render('produtos_categoria', {produtos: produtos_qs
+            });
     });
 });
 
