@@ -121,7 +121,7 @@ app.get('/categorias', (req, res) => {
     });
 });
 
-app.get('/produtos/:id', (req, res) => {
+app.get('/produtos/:id/detalhes', (req, res) => {
     const id = req.params.id;
     let sql = 'SELECT * FROM produtos WHERE id = ?';
     conexao.query(sql, [id], function(erro, produto_qs) {
@@ -163,6 +163,23 @@ app.get('/produtos/categoria/categoria:id', (req, res) => {
             res.render('produtos_categoria', {produtos: produtos_qs
             });
     });
+});
+
+app.post('/produtos/:id/remover', (req, res) => {
+    const id = req.params.id;
+    let sql = 'DELETE FROM produtos WHERE id = ?';
+    conexao.query(sql, [id], function(erro, resultado) {
+        if (erro) {
+            console.error('Erro ao remover produto:', erro);
+            return res.status(500).send('Erro ao remover produto');
+        }
+        console.log('Produto removido com sucesso!');
+        res.redirect('/');
+    });
+});
+
+app.get('/produto', (req, res) => {
+    res.render('produto_form');
 });
 
 app.listen(8080);
